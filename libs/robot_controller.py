@@ -21,3 +21,40 @@ class Snatch3r(object):
     
     # TODO: Implement the Snatch3r class as needed when working the sandox exercises
     # (and delete these comments)
+    def __init__(self):
+        self.inches_moved = 0
+        self.left_motor=ev3.LargeMotor(ev3.OUTPUT_B)
+        self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+
+    def drive_inches(self, inches_target, speed_deg_per_second):
+        degrees_per_inch = 90
+        motor_turns_needed_in_degrees = inches_target * degrees_per_inch
+
+        self.left_motor.run_to_rel_pos(
+            position_sp=motor_turns_needed_in_degrees,
+                                  speed_sp=
+                                  speed_deg_per_second, stop_action='brake')
+        self.right_motor.run_to_rel_pos(
+            position_sp=motor_turns_needed_in_degrees,
+                                   speed_sp=
+                                   speed_deg_per_second, stop_action='brake')
+        self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
+
+        ev3.Sound.beep()
+
+    def turn_degrees(self, degrees_to_turn, turn_speed_sp):
+        motor_turns_needed_in_degrees = degrees_to_turn * 5
+        speedright = turn_speed_sp
+        speedleft = -1* turn_speed_sp
+
+
+        self.left_motor.run_to_rel_pos(
+            position_sp=motor_turns_needed_in_degrees,speed_sp=speedleft,
+            stop_action='brake')
+        self.right_motor.run_to_rel_pos(
+            position_sp=motor_turns_needed_in_degrees,
+            speed_sp=speedright,
+            stop_action='brake')
+        self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
+
+        ev3.Sound.beep()

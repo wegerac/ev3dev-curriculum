@@ -70,7 +70,6 @@ while time_s != 0:
     degrees_per_inch = 90
     motor_turns_needed_in_degrees = inches_target * degrees_per_inch
 
-    print('Here it Is', motor_turns_needed_in_degrees,' ', speed)
 
     left_motor.run_to_rel_pos(position_sp = motor_turns_needed_in_degrees,speed_sp =
     speed, stop_action ='brake')
