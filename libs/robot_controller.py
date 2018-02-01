@@ -43,7 +43,7 @@ class Snatch3r(object):
         ev3.Sound.beep()
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
-        motor_turns_needed_in_degrees = degrees_to_turn * 5.4
+        motor_turns_needed_in_degrees = degrees_to_turn * 5.1
         speedright = turn_speed_sp
         speedleft = turn_speed_sp
 
