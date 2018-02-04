@@ -26,6 +26,8 @@ class Snatch3r(object):
         self.left_motor=ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+        self.rc1= ev3.RemoteControl(channel=1)
+        self.rc2= ev3.RemoteControl(channel=2)
         self.touch_sensor = ev3.TouchSensor()
         assert self.touch_sensor
         self.arm_motor.position = 0
@@ -87,3 +89,5 @@ class Snatch3r(object):
         self.arm_motor.run_to_abs_pos(position_sp=0, speed_sp=900)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep()
+
+    def r
