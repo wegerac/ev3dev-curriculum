@@ -61,19 +61,31 @@ def main():
     # TODO: 4. Add the necessary IR handler callbacks as per the instructions above.
     # Remote control channel 1 is for driving the crawler tracks around (none of these functions exist yet below).
     # Remote control channel 2 is for moving the arm up and down (all of these functions already exist below).
+    rc1 = ev3.RemoteControl(channel=1)
+    rc2 = ev3.RemoteControl(channel=2)
 
     # For our standard shutdown button.
     btn = ev3.Button()
     btn.on_backspace = lambda state: handle_shutdown(state, dc)
 
+    rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
+    rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
+    rc2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
+    rc1.on_red_up = lambda state: right_motor_forward(state, robot)
+    rc1.on_red_down = lambda state: right_motor_back(state, robot)
+    rc1.on_blue_up = lambda state: left_motor_forward(state, robot)
+    rc1.on_blue_down = lambda state: left_motor_back(state, robot)
+
     robot.arm_calibration()  # Start with an arm calibration in this program.
 
     while dc.running:
         # TODO: 5. Process the RemoteControl objects.
+        print('loop')
         btn.process()
-        robot.rc1.process()
-        robot.rc2.process()
+        rc1.process()
+        rc2.process()
         time.sleep(0.01)
+    print('exit')
 
     # TODO: 2. Have everyone talk about this problem together then pick one  member to modify libs/robot_controller.py
     # as necessary to implement the method below as per the instructions in the opening doc string. Once the code has
@@ -88,6 +100,7 @@ def main():
 # Movement event handlers have not been provided.
 # ----------------------------------------------------------------------
 # TODO: 6. Implement the IR handler callbacks handlers.
+
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
 #
@@ -140,6 +153,24 @@ def handle_shutdown(button_state, dc):
     """
     if button_state:
         dc.running = False
+
+
+def right_motor_forward(button_state, robot):
+    print('before')
+    robot.right_forward(button_state)
+    print('forward')
+
+
+def right_motor_back(button_state, robot):
+    robot.right_backward(button_state)
+
+
+def left_motor_back(button_state, robot):
+    robot.left_backward(button_state)
+
+
+def left_motor_forward(button_state, robot):
+    robot.left_forward(button_state)
 
 # ----------------------------------------------------------------------
 # Calls  main  to start the ball rolling.

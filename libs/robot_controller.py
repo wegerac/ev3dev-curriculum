@@ -26,8 +26,6 @@ class Snatch3r(object):
         self.left_motor=ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
-        self.rc1= ev3.RemoteControl(channel=1)
-        self.rc2= ev3.RemoteControl(channel=2)
         self.touch_sensor = ev3.TouchSensor()
         assert self.touch_sensor
         self.arm_motor.position = 0
@@ -75,6 +73,7 @@ class Snatch3r(object):
         self.arm_motor.run_to_rel_pos(
             speed_sp=900, position_sp=-5100)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        print('motor is no longer running')
         ev3.Sound.beep()
         self.arm_motor.position = 0
 
@@ -90,4 +89,34 @@ class Snatch3r(object):
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep()
 
-    def r
+    def right_forward(self, state):
+        if state:
+            self.right_motor.run_forever(speed_sp=600)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        else:
+            self.right_motor.stop()
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+
+    def right_backward(self, state):
+        if state:
+            self.right_motor.run_forever(speed_sp=-600)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+        else:
+            self.right_motor.stop()
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+
+    def left_forward(self, state):
+        if state:
+            self.left_motor.run_forever(speed_sp=600)
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+        else:
+            self.left_motor.stop()
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+
+    def left_backward(self, state):
+        if state:
+            self.left_motor.run_forever(speed_sp=600)
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+        else:
+            self.left_motor.stop()
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
