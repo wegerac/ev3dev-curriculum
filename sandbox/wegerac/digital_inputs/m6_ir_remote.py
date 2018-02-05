@@ -80,7 +80,6 @@ def main():
 
     while dc.running:
         # TODO: 5. Process the RemoteControl objects.
-        print('loop')
         btn.process()
         rc1.process()
         rc2.process()

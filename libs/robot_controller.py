@@ -115,8 +115,16 @@ class Snatch3r(object):
 
     def left_backward(self, state):
         if state:
-            self.left_motor.run_forever(speed_sp=600)
+            self.left_motor.run_forever(speed_sp=-600)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
         else:
             self.left_motor.stop()
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+
+    def shutdown(self):
+        self.left_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+        self.right_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        print('Good Bye')
+        ev3.Sound.speak("Good Bye")
