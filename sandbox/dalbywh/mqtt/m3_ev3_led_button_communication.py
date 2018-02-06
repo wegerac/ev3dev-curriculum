@@ -94,6 +94,7 @@ def main():
 
     my_delegate = MyDelegate()
     mqtt_client = com.MqttClient(my_delegate)
+    my_delegate.mqtt_client = mqtt_client
     mqtt_client.connect_to_pc()
 
 
