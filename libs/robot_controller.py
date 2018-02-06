@@ -27,6 +27,7 @@ class Snatch3r(object):
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.touch_sensor = ev3.TouchSensor()
+        self.running = True
 
         assert self.touch_sensor
         self.arm_motor.position = 0
@@ -122,10 +123,16 @@ class Snatch3r(object):
             self.left_motor.stop()
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
+
     def shutdown(self):
         self.left_motor.stop()
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
         self.right_motor.stop()
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        self.running = False
         print('Good Bye')
         ev3.Sound.speak("Good Bye")
+
+    def loop_forever(self):
+        while self.running:
+            time.sleep(0.01)
