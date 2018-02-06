@@ -132,7 +132,7 @@ def main():
 # ----------------------------------------------------------------------
 # TODO: 4. Implement the functions for the drive button callbacks.
 def drive_forward(mqtt_client, left_speed, right_speed):
-    mqtt_client.send_message('right_motor.run_forever',['speed_sp =', 
+    mqtt_client.send_message('right_motor.run_forever',['speed_sp =',
                                                         right_speed])
     mqtt_client.send_message('left_motor.run_forever', [left_speed])
 
