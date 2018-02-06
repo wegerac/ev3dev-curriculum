@@ -27,6 +27,7 @@ class Snatch3r(object):
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.touch_sensor = ev3.TouchSensor()
+
         assert self.touch_sensor
         self.arm_motor.position = 0
 
@@ -89,33 +90,33 @@ class Snatch3r(object):
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep()
 
-    def right_forward(self, state):
+    def right_forward(self, state, speed):
         if state:
-            self.right_motor.run_forever(speed_sp=600)
+            self.right_motor.run_forever(speed_sp=speed)
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
         else:
             self.right_motor.stop()
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
-    def right_backward(self, state):
+    def right_backward(self, state, speed):
         if state:
-            self.right_motor.run_forever(speed_sp=-600)
+            self.right_motor.run_forever(speed_sp=-speed)
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
         else:
             self.right_motor.stop()
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
-    def left_forward(self, state):
+    def left_forward(self, state, speed):
         if state:
-            self.left_motor.run_forever(speed_sp=600)
+            self.left_motor.run_forever(speed_sp=speed)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
         else:
             self.left_motor.stop()
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
-    def left_backward(self, state):
+    def left_backward(self, state, speed):
         if state:
-            self.left_motor.run_forever(speed_sp=-600)
+            self.left_motor.run_forever(speed_sp=-speed)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
         else:
             self.left_motor.stop()
