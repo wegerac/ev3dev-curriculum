@@ -63,8 +63,8 @@ class Snatch3r(object):
             stop_action='brake')
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
-
         ev3.Sound.beep()
+
 
     def arm_calibration(self):
         self.arm_motor.run_forever(speed_sp=900)
