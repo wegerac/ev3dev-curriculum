@@ -34,6 +34,7 @@ class Snatch3r(object):
         assert self.ir_sensor
         assert self.touch_sensor
         self.arm_motor.position = 0
+        self.pixy = ev3.Sensor(driver_name="pixy-lego")
 
     def drive_inches(self, inches_target, speed_deg_per_second):
         degrees_per_inch = 90
