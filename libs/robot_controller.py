@@ -126,6 +126,9 @@ class Snatch3r(object):
             self.left_motor.stop()
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
+    def stop(self):
+        self.right_motor.stop(stop_action = 'brake')
+        self.left_motor.stop(stop_actoin = 'brake')
 
     def shutdown(self):
         self.left_motor.stop()
