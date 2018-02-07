@@ -28,7 +28,8 @@ class Snatch3r(object):
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.touch_sensor = ev3.TouchSensor()
         self.running = True
-
+        self.ir_sensor = ev3.InfraredSensor()
+        assert self.ir_sensor
         assert self.touch_sensor
         self.arm_motor.position = 0
 
