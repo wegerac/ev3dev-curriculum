@@ -27,7 +27,7 @@ def main():
     # For teams of 3 just have 2 people talk to each other and the other person can just watch this time.
     my_name = "William"  # Used to set the topic that you are *subscribed to*
     # listen to
-    team_member_name = "Michael"  # Used to set the topic that you will
+    team_member_name = "Andrew"  # Used to set the topic that you will
     # *publish
     #  to*
 
