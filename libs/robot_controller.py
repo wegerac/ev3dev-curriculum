@@ -22,6 +22,10 @@ class Snatch3r(object):
     # TODO: Implement the Snatch3r class as needed when working the sandox exercises
     # (and delete these comments)
     def __init__(self):
+        """Establishes a left, right, and arm motor. Establishes the sensors
+        (touch, ir, and color) sensors. Establishes the pixy camera. Sets
+        inches moved to zero. Sets the state of running to be true. This all
+        only occurs when the sensors are connected."""
         self.inches_moved = 0
         self.left_motor=ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
@@ -38,6 +42,8 @@ class Snatch3r(object):
         assert self.pixy
 
     def drive_inches(self, inches_target, speed_deg_per_second):
+        """Drives so far in inches at a speed in degrees per second. A
+        negative distance will make the robot travel backwards."""
         degrees_per_inch = 90
         motor_turns_needed_in_degrees = inches_target * degrees_per_inch
 
@@ -54,6 +60,10 @@ class Snatch3r(object):
         ev3.Sound.beep()
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
+        """Turns the robot a certain number of degrees LEFT from its
+        original orientation IF the degrees to turn value is positive. Will
+        turn RIGHT if the degrees to turn is negative. Turns at a speed in
+        degrees per second."""
         motor_turns_needed_in_degrees = degrees_to_turn * 5.1
         speedright = turn_speed_sp
         speedleft = turn_speed_sp
@@ -72,6 +82,9 @@ class Snatch3r(object):
 
 
     def arm_calibration(self):
+        """Raises the arm until the touch sensor is pressed and then lowers
+        the arm 5100 degrees (the amount to make the arm reset). Upon
+        completing this cycle the zero position for the encoders is reset."""
         self.arm_motor.run_forever(speed_sp=900)
         while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
@@ -85,6 +98,7 @@ class Snatch3r(object):
         self.arm_motor.position = 0
 
     def arm_up(self):
+        """Raises the arm until the touch sensor is pressed"""
         self.arm_motor.run_to_rel_pos(position_sp=5100, speed_sp=900)
         while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
@@ -92,11 +106,14 @@ class Snatch3r(object):
         ev3.Sound.beep()
 
     def arm_down(self):
+        """lowers the arm until the encoders are reset to zero."""
         self.arm_motor.run_to_abs_pos(position_sp=0, speed_sp=900)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep()
 
     def right_forward(self, state, speed):
+        """Moves the right motor forward upon a button press. The motor moves
+        at a speed in degrees per second."""
         if state:
             self.right_motor.run_forever(speed_sp=speed)
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
@@ -105,6 +122,8 @@ class Snatch3r(object):
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
     def right_backward(self, state, speed):
+        """Moves the right motor backward upon a button press. The motor
+        moves at a speed in degrees per second"""
         if state:
             self.right_motor.run_forever(speed_sp=-speed)
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
@@ -113,6 +132,8 @@ class Snatch3r(object):
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
     def left_forward(self, state, speed):
+        """Moves the left motor forward upon a button press. The motor moves
+                at a speed in degrees per second."""
         if state:
             self.left_motor.run_forever(speed_sp=speed)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
@@ -121,6 +142,8 @@ class Snatch3r(object):
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
     def left_backward(self, state, speed):
+        """Moves the left motor backward upon a button press. The motor moves
+                at a speed in degrees per second."""
         if state:
             self.left_motor.run_forever(speed_sp=-speed)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
@@ -129,10 +152,15 @@ class Snatch3r(object):
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
     def stop(self):
+        """Stops both of the drive motors by making them brake.
+        The robot is not shut down"""
         self.right_motor.stop(stop_action = 'brake')
         self.left_motor.stop(stop_action = 'brake')
 
     def shutdown(self):
+        """Stops both of the motors. Sets the robots LEDs to green. Sets the
+        running state to false to break the while loop. Prints 'Good Bye' on
+        the computer side and the robot speaks 'Good Bye' """
         self.left_motor.stop()
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
         self.right_motor.stop()
@@ -142,5 +170,6 @@ class Snatch3r(object):
         ev3.Sound.speak("Good Bye")
 
     def loop_forever(self):
+        """Allows the robot to run so long as self.running is true."""
         while self.running:
             time.sleep(0.01)
