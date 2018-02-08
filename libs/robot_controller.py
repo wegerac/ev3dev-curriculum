@@ -173,3 +173,51 @@ class Snatch3r(object):
         """Allows the robot to run so long as self.running is true."""
         while self.running:
             time.sleep(0.01)
+
+    def seek_beacon(self):
+        """
+        Uses the IR Sensor in BeaconSeeker mode to find the beacon.  If the beacon is found this return True.
+        If the beacon is not found and the attempt is cancelled by hitting the touch sensor, return False.
+
+        """
+
+        beacon_sensor = ev3.BeaconSeeker(channel=1)
+        forward_speed = 300
+        turn_speed = 100
+
+        while not self.touch_sensor.is_pressed:
+            current_heading = beacon_sensor.heading
+            current_distance = beacon_sensor.distance
+            if current_distance == -128:
+                print("IR Remote not found. Distance is -128")
+                self.stop()
+            else:
+                if math.fabs(current_heading) < 2:
+                    print("On the right heading. Distance: ", current_distance)
+                    if current_distance == 0:
+                        self.right_forward(True, forward_speed)
+                        self.left_forward(True, forward_speed)
+                        time.sleep(0.4)
+                        self.stop()
+                        return True
+                    elif current_distance > 0:
+                        print("Beacon is in front of the robot.")
+                        self.right_forward(True, forward_speed)
+                        self.left_forward(True, forward_speed)
+                elif math.fabs(current_heading) > 2 and math.fabs(current_heading) < 10:
+                    if current_heading < 0:
+                        print("Beacon is on the left.")
+                        self.right_forward(True, turn_speed)
+                        self.left_backward(True, turn_speed)
+                    else:
+                        print("Beacon is on the right.")
+                        self.right_backward(True, turn_speed)
+                        self.left_forward(True, turn_speed)
+                elif math.fabs(current_heading) > 10:
+                    self.stop()
+                    print('Heading too far off.')
+            time.sleep(0.01)
+
+        print("Abandon ship!")
+        self.stop()
+        return False
