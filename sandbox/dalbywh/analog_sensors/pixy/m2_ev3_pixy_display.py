@@ -22,11 +22,12 @@ def main():
     ev3.Sound.speak("Pixy display").wait()
     print("Press the touch sensor to exit this program.")
 
-    # TODO: 2. Create an MqttClient (no delegate needed since EV3 will only send data, so an empty constructor is fine)
+    # DONE: 2. Create an MqttClient (no delegate needed since EV3 will only
+    # send data, so an empty constructor is fine)
     # Then connect to the pc using the connect_to_pc method.
 
     robot = robo.Snatch3r()
-    robot.pixy.mode = "SIG1"
+    robot.pixy.mode = "SIG2"
     mqtt_client = com.MqttClient(robot)
     mqtt_client.connect_to_pc()
 
@@ -34,11 +35,17 @@ def main():
 
         # DONE: 3. Read the Pixy values for x, y, width, and height
         # Print the values (much like the print_pixy_readings example)
-        print("Point", robot.pixy.value(1), robot.pixy.value(2), end=' ')
-        print("Hieght:", robot.pixy.value(3), "Width:", robot.pixy.value(4))
+        x = robot.pixy.value(1)
+        y = robot.pixy.value(2)
+        width = robot.pixy.value(3)
+        height = robot.pixy.value(4)
+        print("Point", x, y, end=' ')
+        print("Hieght:", height, "Width:", width )
 
-        # TODO: 4. Send the Pixy values to the PC by calling the on_rectangle_update method
+        # DONE: 4. Send the Pixy values to the PC by calling the
+        # on_rectangle_update method
         # If you open m2_pc_pixy_display you can see the parameters for that method [x, y, width, height]
+        mqtt_client.send_message("on_rectangle_update", [x, y, width, height])
 
 
 
