@@ -83,7 +83,8 @@ def follow_the_line(robot, white_level, black_level):
     # Optional extra - For a harder challenge could you drive on the black line and handle left or right turns?
 
     while not robot.touch_sensor.is_pressed:
-        while robot.color_sensor.ambient_light_intensity == black_level:
+        while robot.color_sensor.ambient_light_intensity >= black_level and \
+                robot.color_sensor.ambient_light_intensity != white_level:
             robot.right_motor.run_forever(speed_sp = 400)
             robot.left_motor.run_forever(speed_sp = 400)
             time.sleep(0.1)
