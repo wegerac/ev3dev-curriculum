@@ -30,7 +30,7 @@ def main():
     # the code below works to monitor the touch_sensor.
     ir = robot.ir_sensor
     while not robot.touch_sensor.is_pressed:
-        # TODO: 2. Implement the module as described in the opening comment block.
+        # DONE: 2. Implement the module as described in the opening comment block.
         # It is recommended that you add to your Snatch3r class's constructor the ir_sensor, as shown
         #   self.ir_sensor = ev3.InfraredSensor()
         #   assert self.ir_sensor
@@ -39,6 +39,7 @@ def main():
         if ir.proximity < 15:
             ev3.Sound.beep()
             time.sleep(1.5)
+
 
         time.sleep(0.1)
 
