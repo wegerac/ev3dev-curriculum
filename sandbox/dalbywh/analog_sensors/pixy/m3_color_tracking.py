@@ -49,8 +49,6 @@ def main():
         else:
             robot.stop()
 
-
-
         time.sleep(0.25)
 
     robot.stop()

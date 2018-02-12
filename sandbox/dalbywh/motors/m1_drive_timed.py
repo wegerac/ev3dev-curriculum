@@ -94,8 +94,6 @@ while time_s != 0:
 print("Goodbye!")
 ev3.Sound.speak("Goodbye").wait()
 
-
-
 # DONE: 4. Change the input questions from:
 #   Enter a speed for the left motor (0 to 900 dps):
 #   Enter a speed for the right motor (0 to 900 dps):

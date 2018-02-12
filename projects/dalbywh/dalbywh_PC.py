@@ -44,14 +44,19 @@ import time
 import math
 import robot_controller as robo
 
+
 def main():
+    # establishes frame for GUI
+
     root = tkinter.Tk()
     root.title = 'Robot Controller'
     controller_frame = ttk.Frame(root, padding = 5)
     controller_frame.grid()
 
-    button_example = ttk.Button(controller_frame, text = 'Blah')
-    button_example.grid()
+    # Forward button
+    forward_button = ttk.Button(controller_frame, text = 'Forward')
+    forward_button.grid(row = 1, column = 1)
+    forward_button['Command'] = lambda: go_forward()
 
     root.mainloop()
 

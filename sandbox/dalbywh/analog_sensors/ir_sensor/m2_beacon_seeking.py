@@ -96,8 +96,8 @@ def seek_beacon(robot):
                 print("On the right heading. Distance: ", current_distance)
                 # You add more!
                 if current_distance == 0:
-                    robot.right_forward(True,forward_speed)
-                    robot.left_forward(True,forward_speed)
+                    robot.right_forward(True, forward_speed)
+                    robot.left_forward(True, forward_speed)
                     time.sleep(0.4)
                     robot.stop()
                     return True
