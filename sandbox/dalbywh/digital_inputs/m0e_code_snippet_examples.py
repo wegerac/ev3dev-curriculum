@@ -121,10 +121,10 @@ def button_events_using_lambda_with_objects():
         if button_state:
             my_robot.arm_up()
 
-    def handle_shutdown(button_state, dc):
+    def handle_shutdown(button_state, motor):
         """Exit the program."""
         if button_state:
-            dc.running = False
+            motor.running = False
 
     # Buttons on EV3
     btn = ev3.Button()
@@ -178,10 +178,10 @@ def sound_examples():
 def ir_remote_example(dc):
     """Example of setting up an IR Remote button, shows only 1 but the pattern is easy to follow for more."""
 
-    def handle_red_up_1(button_state, dc):
+    def handle_red_up_1(button_state, motor):
         if button_state:
             print("Down button is pressed")
-            dc.do_something()
+            motor.do_something()
         else:
             print("Down button was released")
 

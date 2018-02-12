@@ -27,7 +27,7 @@ class Snatch3r(object):
         inches moved to zero. Sets the state of running to be true. This all
         only occurs when the sensors are connected."""
         self.inches_moved = 0
-        self.left_motor=ev3.LargeMotor(ev3.OUTPUT_B)
+        self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.touch_sensor = ev3.TouchSensor()
@@ -49,12 +49,10 @@ class Snatch3r(object):
 
         self.left_motor.run_to_rel_pos(
             position_sp=motor_turns_needed_in_degrees,
-                                  speed_sp=
-                                  speed_deg_per_second, stop_action='brake')
+            speed_sp=speed_deg_per_second, stop_action='brake')
         self.right_motor.run_to_rel_pos(
             position_sp=motor_turns_needed_in_degrees,
-                                   speed_sp=
-                                   speed_deg_per_second, stop_action='brake')
+            speed_sp=speed_deg_per_second, stop_action='brake')
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
         ev3.Sound.beep()
@@ -68,10 +66,8 @@ class Snatch3r(object):
         speedright = turn_speed_sp
         speedleft = turn_speed_sp
 
-
-        self.left_motor.run_to_rel_pos(
-            position_sp= -1*motor_turns_needed_in_degrees,speed_sp=speedleft,
-            stop_action='brake')
+        self.left_motor.run_to_rel_pos(position_sp=-1*motor_turns_needed_in_degrees,
+                                       speed_sp=speedleft, stop_action='brake')
         self.right_motor.run_to_rel_pos(
             position_sp=motor_turns_needed_in_degrees,
             speed_sp=speedright,
@@ -79,7 +75,6 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
         ev3.Sound.beep()
-
 
     def arm_calibration(self):
         """Raises the arm until the touch sensor is pressed and then lowers
@@ -154,8 +149,8 @@ class Snatch3r(object):
     def stop(self):
         """Stops both of the drive motors by making them brake.
         The robot is not shut down"""
-        self.right_motor.stop(stop_action = 'brake')
-        self.left_motor.stop(stop_action = 'brake')
+        self.right_motor.stop(stop_action='brake')
+        self.left_motor.stop(stop_action='brake')
 
     def shutdown(self):
         """Stops both of the motors. Sets the robots LEDs to green. Sets the
@@ -204,7 +199,8 @@ class Snatch3r(object):
                         print("Beacon is in front of the robot.")
                         self.right_forward(True, forward_speed)
                         self.left_forward(True, forward_speed)
-                elif math.fabs(current_heading) > 2 and math.fabs(current_heading) < 10:
+                elif math.fabs(current_heading) > 2 and math.fabs(
+                                                current_heading) < 10:
                     if current_heading < 0:
                         print("Beacon is on the left.")
                         self.right_forward(True, turn_speed)
