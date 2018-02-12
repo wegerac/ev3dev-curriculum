@@ -40,7 +40,6 @@ def main():
             ev3.Sound.beep()
             time.sleep(1.5)
 
-
         time.sleep(0.1)
 
     # TODO: 3. Call over a TA or instructor to sign your team's checkoff sheet.
