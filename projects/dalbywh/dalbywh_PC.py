@@ -40,164 +40,53 @@ Authors: William Dalby
 
 import tkinter
 from tkinter import ttk
+from tkinter import *
 import time
 import math
 import robot_controller as robo
 
 
-def main():
+def make_gui():
     # establishes frame for GUI
 
     root = tkinter.Tk()
     root.title = 'Robot Controller'
-    controller_frame = ttk.Frame(root, padding = 5)
+    controller_frame = ttk.Frame(root, padding=5)
     controller_frame.grid()
 
     # Forward button
-    forward_button = ttk.Button(controller_frame, text = 'Forward')
-    forward_button.grid(row = 1, column = 1)
-    forward_button['Command'] = lambda: go_forward()
+    forward_button = ttk.Button(controller_frame, text='Forward')
+    forward_button.grid(row=1, column=1)
+    # forward_button['Command'] = lambda: go_forward()
+
+    # Left Button
+    left_button = ttk.Button(controller_frame, text='Left')
+    left_button.grid(row=2, column=0)
+
+    # Right Button
+    right_button = ttk.Button(controller_frame, text='Right')
+    right_button.grid(row = 2, column = 2)
+
+    # Brake Button
+    brake_button = ttk.Button(controller_frame, text='Brake')
+    brake_button.grid(row = 2, column = 1)
+
+    # Backwards Button
+    backward_button = ttk.Button(controller_frame, text='Backward')
+    backward_button.grid(row = 3, column = 1)
+
+    # Initialize option menu
+    master = Tk()
+    variable = StringVar(master)
+    variable.set('one')
+
+    menu = OptionMenu
 
     root.mainloop()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def main():
+    make_gui()
 
 
 main()
