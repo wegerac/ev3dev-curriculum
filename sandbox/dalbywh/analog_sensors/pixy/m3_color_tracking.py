@@ -48,9 +48,6 @@ def main():
             robot.left_motor.run_forever(speed_sp=turn_speed)
         else:
             robot.stop()
-
-
-
         time.sleep(0.25)
 
     robot.stop()
