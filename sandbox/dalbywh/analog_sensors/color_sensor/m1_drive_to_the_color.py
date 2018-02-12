@@ -95,15 +95,14 @@ def drive_to_color(button_state, robot, color_to_seek):
         #   assert self.color_sensor
         # Then here you can use a command like robot.color_sensor.color to check the value
         while robot.color_sensor.color != color_to_seek:
-            robot.right_motor.run_forever(speed_sp = 300)
-            robot.left_motor.run_forever(speed_sp = 300)
+            robot.right_motor.run_forever(speed_sp=300)
+            robot.left_motor.run_forever(speed_sp=300)
             time.sleep(0.01)
         robot.right_motor.stop_action = 'brake'
         robot.left_motor.stop_action = 'brake'
 
         robot.right_motor.stop()
         robot.left_motor.stop()
-
 
         # TODO: 4. Call over a TA or instructor to sign your team's checkoff sheet.
         #

@@ -77,7 +77,6 @@ def main():
             print('left')
             ev3.Leds.green_left
 
-
         # TODO: 4. Implement the down button to change the color of both LEDs.
         #   The first press to down should make both LEDs GREEN, the next press makes them RED, then AMBER, then off.
         #   If the user presses the down button again, wrap around the list to GREEN and continue as before.

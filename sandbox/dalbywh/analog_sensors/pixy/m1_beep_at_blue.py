@@ -36,9 +36,10 @@ def main():
         #   self.pixy = ev3.Sensor(driver_name="pixy-lego")
         #   assert self.pixy
         # Then here you can use a command like width = robot.pixy.value(3)
-        if robot.pixy.value(3)>0:
+        if robot.pixy.value(3) > 0:
             print("Point", robot.pixy.value(1), robot.pixy.value(2), end=' ')
-            print("Hieght:", robot.pixy.value(3), "Width:",robot.pixy.value(4))
+            print("Hieght:", robot.pixy.value(3), "Width:",
+                  robot.pixy.value(4))
             ev3.Sound.beep()
             time.sleep(1)
         time.sleep(0.1)

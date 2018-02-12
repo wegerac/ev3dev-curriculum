@@ -40,16 +40,12 @@ def main():
         width = robot.pixy.value(3)
         height = robot.pixy.value(4)
         print("Point", x, y, end=' ')
-        print("Hieght:", height, "Width:", width )
+        print("Hieght:", height, "Width:", width)
 
         # DONE: 4. Send the Pixy values to the PC by calling the
         # on_rectangle_update method
         # If you open m2_pc_pixy_display you can see the parameters for that method [x, y, width, height]
         mqtt_client.send_message("on_rectangle_update", [x, y, width, height])
-
-
-
-
         time.sleep(0.25)
 
     print("Goodbye!")
@@ -65,4 +61,3 @@ def main():
 # Calls  main  to start the ball rolling.
 # ----------------------------------------------------------------------
 main()
-
