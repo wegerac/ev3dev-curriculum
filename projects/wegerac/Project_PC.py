@@ -6,22 +6,37 @@
 import tkinter as tk
 from tkinter import ttk
 import mqtt_remote_method_calls as com
+import random as ran
 
 class PcDelegate(object):
     def __init__(self, label):
         print("")
         self.label = label
         self.count = 0
+        self.total_money = 0
     def string(self, string):
         self.label['text'] = (string + str(self.count))
         self.count = self.count + 1
+
+    def found_item(self, jewl_code):
+        if jewl_code == 0:
+            price = self.calc_price()
+            print(price)
+
+    def calc_price(self):
+        dollar = ran.randint(0, 9999)
+        cents = ran.randint(0, 99)
+        price = str(dollar) + '.' + cents
+        return price
+
+
 
 def main():
 
     root = tk.Tk()
     root.title("Andrew Weger CSSE120 Final Project")
 
-    frame1 = ttk.Frame(root, padding= 20)
+    frame1 = ttk.Frame(root, padding=20)
     frame1.grid()
 
     fbtn = tk.Button(frame1, text="Forward", width=10)
