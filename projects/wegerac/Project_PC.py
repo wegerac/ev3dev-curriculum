@@ -7,9 +7,16 @@ import tkinter as tk
 from tkinter import ttk
 import mqtt_remote_method_calls as com
 
+class PcDelegate(object):
+    def __init__(self, label):
+        print("")
+        self.label = label
+        self.count = 0
+    def string(self, string):
+        self.label['text'] = (string + str(self.count))
+        self.count = self.count + 1
+
 def main():
-    mqtt_client = com.MqttClient()
-    mqtt_client.connect_to_ev3()
 
     root = tk.Tk()
     root.title("Andrew Weger CSSE120 Final Project")
@@ -40,7 +47,14 @@ def main():
     sbtn = tk.Button(frame1, text="Stop", width=10)
     sbtn.grid(row=1, column=1)
     sbtn['command'] = lambda: stop(mqtt_client)
+    root.bind('<space>', lambda event: stop(mqtt_client))
 
+    button_label = ttk.Label(frame1, text="  Buttom messages from EV3  ")
+    button_label.grid(row=2, column=0)
+
+    pc_delegate = PcDelegate(button_label)
+    mqtt_client = com.MqttClient(pc_delegate)
+    mqtt_client.connect_to_ev3()
 
     root.mainloop()
 
