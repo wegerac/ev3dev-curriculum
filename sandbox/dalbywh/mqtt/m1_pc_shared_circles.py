@@ -118,7 +118,6 @@ def left_mouse_click(event, mqtt_client):
     # Additionally you will receive your own message and draw a circle in your color too.
     mqtt_client.send_message('on_circle_draw', [my_color, event.x, event.y])
 
-
     # DONE: 8. Help get everyone on your team running this program at the same
     # time.
     # You should be able to see circles on your computer from everyone else on your team.

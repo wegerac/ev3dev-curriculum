@@ -1,4 +1,4 @@
- #!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 This module lets you practice using the encoder to determine distances while blocking code execution until complete.
 
@@ -7,17 +7,19 @@ You will now use a run_to_rel_pos command to implement the action drive inches a
 Authors: David Fisher and William Dalby, Michael Kelly, Andrew Weger.
 """  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 import ev3dev.ev3 as ev3
-import time
+
+
+# import time
 # DONE: 2. Copy the contents of your m1_drive_timed.py and paste that text into
- #  this file below these comments.
+#  this file below these comments.
 #   If your program says and prints anything at the start change it to print and say "Drive using encoders"
 
 # DONE: 3. Add a beep after the drive motors stop (see code below).  Test your
- # code to hear the beep AFTER movement.
+# code to hear the beep AFTER movement.
 #   ev3.Sound.beep().wait()
 
 # DONE: 4. Instead of using the run_forever, time.sleep, stop pattern switch to
- #  using the run_to_rel_pos command.
+#  using the run_to_rel_pos command.
 #   You will need to determine the position_sp value to pass into the run_to_rel_pos command as a named argument.
 #   Assume the diameter of the wheel is 1.3" (close enough).  A 1.3" diameter wheel results in approximately a 4"
 #     circumference, so 360 degrees = 4 inches of travel.
@@ -61,24 +63,19 @@ right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
 assert left_motor.connected
 assert right_motor.connected
 
-
-
 time_s = 1  # Any value other than 0.
 while time_s != 0:
-    inches_target = int (input('How far would you like to go in inches? '))
-    speed = int (input('How fast would you like to go? '))
+    inches_target = int(input('How far would you like to go in inches? '))
+    speed = int(input('How fast would you like to go? '))
     degrees_per_inch = 90
     motor_turns_needed_in_degrees = inches_target * degrees_per_inch
 
-
-    left_motor.run_to_rel_pos(position_sp = motor_turns_needed_in_degrees,speed_sp =
-    speed, stop_action ='brake')
-    right_motor.run_to_rel_pos(position_sp = motor_turns_needed_in_degrees,speed_sp =
-    speed, stop_action ='brake')
+    left_motor.run_to_rel_pos(position_sp=motor_turns_needed_in_degrees,
+                              speed_sp=speed, stop_action='brake')
+    right_motor.run_to_rel_pos(position_sp=motor_turns_needed_in_degrees,
+                               speed_sp=speed, stop_action='brake')
     right_motor.wait_while(ev3.Motor.STATE_RUNNING)
     ev3.Sound.beep()
 
 print("Goodbye!")
 ev3.Sound.speak("Goodbye").wait()
-
-
