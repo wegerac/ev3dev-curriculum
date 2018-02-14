@@ -37,7 +37,7 @@ Authors: David Fisher and William Dalby, Michael Kelly, Andrew Weger.
 
 
 import mqtt_remote_method_calls as com
-import robot_controller as robo
+# import robot_controller as robo
 
 import ev3dev.ev3 as ev3
 import time
@@ -79,6 +79,7 @@ class MyDelegate(object):
         else:
             ev3.Leds.set_color(led_side, led_color)
 
+
 def main():
     print("--------------------------------------------")
     print(" LED Button communication")
@@ -92,15 +93,10 @@ def main():
     # Once you have that done connect the mqtt_client to the MQTT broker using the connect_to_pc method.
     # Note: on EV3 you call connect_to_pc, but in the PC code it will call connect_to_ev3
 
-
     my_delegate = MyDelegate()
     mqtt_client = com.MqttClient(my_delegate)
     my_delegate.mqtt_client = mqtt_client
     mqtt_client.connect_to_pc()
-
-
-
-
 
     # Buttons on EV3 (these obviously assume TO DO: 3. is done)
     btn = ev3.Button()

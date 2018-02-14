@@ -98,6 +98,7 @@ def handle_up_button(button_state):
     else:
         print("Up button was released")
 
+
 def handle_down_button(button_state):
     """Handle IR / button event."""
     if button_state:
@@ -105,6 +106,7 @@ def handle_down_button(button_state):
         play_song_by_notes_list()
     else:
         print("Down button was released")
+
 
 def handle_left_button(button_state):
     """Handle IR / button event."""
@@ -114,6 +116,7 @@ def handle_left_button(button_state):
     else:
         print("left button was released")
 
+
 def handle_right_button(button_state):
     """Handle IR / button event."""
     if button_state:
@@ -121,9 +124,6 @@ def handle_right_button(button_state):
         play_wav_file()
     else:
         print("right button was released")
-
-
-
 
 # DONE: 6. Implement the handle_shutdown function.
 #   Function signature should be:
@@ -137,12 +137,12 @@ def handle_right_button(button_state):
 # You can also change the print message that said:
 #    "Press Ctrl C on your keyboard to exit this program (the Back button is not wired up to exit)"
 # to instead say "Press Back to exit this program."
+
+
 def handle_shutdown(button_state, dc):
     if button_state:
         print('backspace')
         dc.running = False
-
-
 
 # DONE: 7. Call over a TA or instructor to sign your team's checkoff sheet and
 # do a code review.
@@ -160,6 +160,8 @@ def handle_shutdown(button_state, dc):
 # This can be a handy reference when you want to use your own Sound features.
 # Reference http://python-ev3dev.readthedocs.io/en/latest/other.html#sound
 # ----------------------------------------------------------------------
+
+
 def play_song_by_individual_tones():
     """
     Exam of using the ev3.Sound.tone method to play a single tone. For music the ev3.Sound.tone method

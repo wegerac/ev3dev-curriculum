@@ -81,13 +81,13 @@ def main():
     left_button.grid(row=3, column=0)
     # left_button and '<Left>' key
     left_button['command'] = lambda: turn_left(mqtt_client,
-                                                      int(
+                                               int(
                                                           left_speed_entry.get()),
-                                                      int(
+                                               int(
                                                           right_speed_entry.get()))
     root.bind('<Left>', lambda event: turn_left(mqtt_client,
-                                                  int(left_speed_entry.get()),
-                                                  int(right_speed_entry.get(
+                                                int(left_speed_entry.get()),
+                                                int(right_speed_entry.get(
 
                                                   ))))
 
@@ -101,7 +101,7 @@ def main():
     right_button.grid(row=3, column=2)
     # right_button and '<Right>' key
     right_button['command'] = lambda: turn_right(mqtt_client,
-                                                      int(
+                                                 int(
                                                           left_speed_entry.get()),
                                                  int(right_speed_entry.get()))
     root.bind('<Right>', lambda event: turn_right(mqtt_client,
@@ -114,15 +114,9 @@ def main():
     back_button.grid(row=4, column=1)
     # back_button and '<Down>' key
     back_button['command'] = lambda: drive_backward(mqtt_client,
-                                                      int(
-                                                          left_speed_entry.get()),
-                                                      int(
-                                                          right_speed_entry.get()))
-    root.bind('<Down>', lambda event: drive_backward(mqtt_client,
-                                                  int(left_speed_entry.get()),
-                                                  int(right_speed_entry.get(
-
-                                                  ))))
+                                                    int(left_speed_entry.get()), int(right_speed_entry.get()))
+    root.bind('<Down>', lambda event: drive_backward(mqtt_client, int(
+        left_speed_entry.get()), int(right_speed_entry.get())))
 
     up_button = ttk.Button(main_frame, text="Up")
     up_button.grid(row=5, column=0)
@@ -154,17 +148,21 @@ def drive_forward(mqtt_client, left_speed, right_speed):
     mqtt_client.send_message('right_forward', [True, right_speed])
     mqtt_client.send_message('left_forward', [True, left_speed])
 
+
 def turn_left(mqtt_client, left_speed, right_speed):
     mqtt_client.send_message('right_forward', [True, right_speed])
     mqtt_client.send_message('left_backward', [True, left_speed])
+
 
 def turn_right(mqtt_client, left_speed, right_speed):
     mqtt_client.send_message('right_backward', [True, right_speed])
     mqtt_client.send_message('left_forward', [True, left_speed])
 
+
 def stop(mqtt_client):
     mqtt_client.send_message('left_forward', [False, 0])
     mqtt_client.send_message('right_forward', [False, 0])
+
 
 def drive_backward(mqtt_client, left_speed, right_speed):
     mqtt_client.send_message('right_backward', [True, right_speed])
