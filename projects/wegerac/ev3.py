@@ -6,6 +6,7 @@ import robot_controller as robo
 import ev3dev.ev3 as ev3
 import time
 
+
 class Ev3Delegate(object):
     def __init__(self):
         self.running = True
@@ -13,23 +14,38 @@ class Ev3Delegate(object):
         self.robot = robo.Snatch3r()
 
     def right_forward(self, state, speed):
+        '''Gets the state and speed from the message sent with mqtt
+        and calls the function right_forward in the robot controller file.
+        If state is True, the motor will run forwards, and if False, the motor will stop.'''
         robo.Snatch3r.right_forward(self.robot, state, speed)
 
     def right_backward(self, state, speed):
+        '''Gets the state and speed from the message sent with mqtt
+        and calls the function right_backward in the robot controller file.
+        If state is True, the right motor will run backwards, and if False, the motor will stop.'''
         robo.Snatch3r.right_backward(self.robot, state, speed)
 
     def left_forward(self, state, speed):
+        '''Gets the state and speed from the message sent with mqtt
+        and calls the function left_forward in the robot controller file.
+        If state is True, the motor will run forwards, and if False, the motor will stop.'''
         robo.Snatch3r.left_forward(self.robot, state, speed)
 
     def left_backward(self, state, speed):
+        '''Gets the state and speed from the message sent with mqtt
+        and calls the function left_backward in the robot controller file.
+        If state is True, the right motor will run backwards, and if False, the motor will stop.'''
         robo.Snatch3r.left_backward(self.robot, state, speed)
 
     def shutdown(self):
+        '''Gets a message from mqtt to call the robots shutdown function.'''
         self.robot.shutdown()
 
     def find_grail(self):
-        bool = self.robot.seek_beacon()
-        if bool == True:
+        '''Finds the "grail", actually the controller in beacon mode, using the seek_beacon
+        function in the robot_controller file.'''
+        seek = self.robot.seek_beacon()
+        if seek == True:
             self.robot.arm_up()
             self.robot.turn_degrees(360, 800)
             ev3.Sound.speak('I found it!')
@@ -40,6 +56,9 @@ class Ev3Delegate(object):
 
 
 def main():
+    '''This creates the looping code for the game, and also the delegate and mqtt_client. It will continually run the color sensor
+    and if it returns one of the desired values, it will send a mqtt message to the client of what it found.
+    When a color is found the robot send a mqtt message to the computer with its "jewl code", 0-sapphire/1-emerald/2-ruby.'''
     print("********************************")
     print("RUNNING")
     print("********************************")
@@ -80,13 +99,8 @@ def main():
             break
 
 
-
-def send_string(mqtt, state):
-    if state:
-        mqtt.send_message('found_item', [0])
-        print("got")
-
 def found_stone(mqtt, stone_code):
+    '''This sends a mqtt message to the client, the computer, which will send the stone code, same as the ones above.'''
     mqtt.send_message('found_item', [stone_code])
 
 

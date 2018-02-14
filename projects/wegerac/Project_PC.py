@@ -17,6 +17,7 @@ class PcDelegate(object):
         self.total_money = 0
         self.grail = grailbtn
         self.label = label
+        self.history = []
 
     def string(self, string):
         self.label['text'] = (string + str(self.count))
@@ -29,7 +30,7 @@ class PcDelegate(object):
             self.total_money = self.total_money + float(price)
             text = str('You found a sapphire worth, ' + '$' + price)
             self.listbox.insert(0, text)
-            self.listbox.insert(0, float(price))
+            self.history.append(float(price))
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a sapphire worth, ' + price)
 
@@ -38,7 +39,7 @@ class PcDelegate(object):
             text = str('You found a emerald worth, ' + '$' + str(price))
             self.total_money = self.total_money + float(price)
             self.listbox.insert(0, text)
-            self.listbox.insert(0, float(price))
+            self.history.append(float(price))
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a emerald worth, ' + str(price))
 
@@ -47,7 +48,7 @@ class PcDelegate(object):
             text = str('You found a ruby worth, ' + '$' + str(price))
             self.total_money = self.total_money + float(price)
             self.listbox.insert(0, text)
-            self.listbox.insert(0, float(price))
+            self.history.append(float(price))
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a ruby worth, ' + price)
 
@@ -162,11 +163,11 @@ def find_grail(mqtt_client):
     mqtt_client.send_message('find_grail')
 
 def delete(delagate, listbox, label):
-    price = listbox.get(0)
-    for k in range(2):
-        listbox.delete(0)
+
+    price = delagate.history[len(delagate.history) - 1]
     total = delagate.total_money
     delagate.total_money = total - price
+    listbox.delete(0)
     label['text'] = 'Total money: ' + '$' + str(delagate.total_money)
     if listbox.size() == 0:
         label['text'] = "Total money: " + '$0.00'
