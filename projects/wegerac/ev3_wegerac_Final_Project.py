@@ -55,9 +55,17 @@ class Ev3Delegate(object):
             ev3.Sound.speak('Ha')
             ev3.Sound.speak('Ha')
             ev3.Sound.speak('I will rule them all!')
+            self.mqtt_client.send_message('win')
+
+    def arm_down(self):
+        self.robot.arm_down()
+
+    def arm_up(self):
+        self.robot.arm_up()
 
     def calibrate(self):
-        self.robot.arm_calibration()
+        self.robot.arm_up()
+        self.robot.arm_down()
 
 
 
@@ -77,7 +85,9 @@ def main():
 
     my_delegate.robot.arm_calibration()
 
-    beacon = ev3.BeaconSeeker(channel= 1)
+    btn = ev3.Button()
+
+    beacon = ev3.BeaconSeeker(channel=1)
 
     while True:
 
@@ -100,8 +110,8 @@ def main():
             mqtt_client.send_message('grail_in_sight')
             time.sleep(2)
 
-        elif my_delegate.robot.touch_sensor.is_pressed:
-            ev3.Sound.speak('break')
+        elif btn.left:
+            my_delegate.robot.shutdown()
             break
 
 

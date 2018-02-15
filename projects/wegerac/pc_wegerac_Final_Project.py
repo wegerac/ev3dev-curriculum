@@ -12,7 +12,7 @@ import time
 
 class PcDelegate(object):
     '''Creates the delegate for the PC'''
-    def __init__(self, listbox, grailbtn, label, label2):
+    def __init__(self, listbox, grailbtn, label, label2, frame1, frame2, notebook):
         print("")
         self.listbox = listbox
         self.count = 0
@@ -21,6 +21,13 @@ class PcDelegate(object):
         self.label = label
         self.history = []
         self.label2 = label2
+        self.frame1 = frame1
+        self.frame2 = frame2
+        self.notebook = notebook
+        if self.total_money >= 1000000:
+            self.win()
+
+
 
     def found_item(self, jewl_code):
         '''Gets the number from the mqtt message sent from the robot and the different
@@ -69,6 +76,11 @@ class PcDelegate(object):
         price = str(dollar) + '.' + str(cents)
         return price
 
+    def win(self):
+            self.frame1.destroy()
+            self.frame2.destroy()
+            self.notebook.tab(0, text='CONGRATULATIONS')
+            self.notebook.tab(1, text='YOU WIN!')
 
 def main():
     '''Creates the tkinter GUI for the game'''
@@ -132,22 +144,31 @@ def main():
     moneylabel1 = tk.Label(frame1, text='Total money: $0.00')
     moneylabel1.grid(row=0, column=1)
 
-    armbtn = tk.Button(tab2, text='Arm Calibration')
+    armbtn = tk.Button(tab2, text='Arm Calibration', width=12)
     armbtn['command'] = lambda: calibrate(mqtt_client)
-    armbtn.grid(row=0, column=0)
+    armbtn.grid(row=1, column=0)
 
-    resetmoneybtn = tk.Button(tab2, text='Reset Money')
+    resetmoneybtn = tk.Button(tab2, text='Reset Money',width=12)
     resetmoneybtn['command'] = lambda: reset_money(pc_delegate)
-    resetmoneybtn.grid(row=0, column=1)
+    resetmoneybtn.grid(row=1, column=2)
 
     moneylabel2 = tk.Label(tab2, text='Total money: $0.00')
+    moneylabel2.grid(row=0, column=1)
 
     notebook.add(tab1, text='Controller and Listbox')
     notebook.add(tab2, text='Options')
 
     notebook.grid()
 
-    pc_delegate = PcDelegate(listbox, grailbtn, moneylabel1, moneylabel2)
+    armup = tk.Button(tab2, text='Arm Up', width=12)
+    armup['command'] = lambda: arm_up(mqtt_client)
+    armup.grid(row=2, column=0)
+
+    armdown = tk.Button(tab2, text='Arm Down', width=12)
+    armdown['command'] = lambda:arm_down(mqtt_client)
+    armdown.grid(row=2, column=2)
+
+    pc_delegate = PcDelegate(listbox, grailbtn, moneylabel1, moneylabel2, frame1, frame2, notebook)
     mqtt_client = com.MqttClient(pc_delegate)
     mqtt_client.connect_to_ev3()
 
@@ -173,8 +194,8 @@ def turn_right(mqtt_client, left_speed, right_speed):
     '''Takes the given mqtt_client, and speeds to call the driving
     functions that are in the robots delegate class.'''
 
-    mqtt_client.send_message('right_backward', [True, right_speed])
     mqtt_client.send_message('left_forward', [True, left_speed])
+    mqtt_client.send_message('right_backward', [True, right_speed])
 
 
 def stop(mqtt_client):
@@ -219,13 +240,20 @@ def delete(delegate, listbox, label, label2):
         label2['text'] = "Total money: " + '$0.00'
 
 def calibrate(mqtt_client):
-    mqtt_client.send_message(calibrate)
+    mqtt_client.send_message('calibrate')
+
+def arm_up(mqtt_client):
+    mqtt_client.send_message('arm_up')
+
+def arm_down(mqtt_client):
+    mqtt_client.send_message('arm_down')
 
 def reset_money(delegate):
     delegate.total_money = 0
     delegate.history = []
     delegate.label['text'] = 'Total money: $0.00'
     delegate.label2['text'] = 'Total money: $0.00'
+    delegate.listbox.delete(0, tk.END)
 
 
 
