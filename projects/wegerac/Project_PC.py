@@ -1,4 +1,5 @@
-""" Author: Andrew Weger
+""" Author: Andrew Weger Feb 12-19, 2018
+    Uses a robot to "find gems"
     Final Project for CSSE 120
 
 """
@@ -51,7 +52,6 @@ class PcDelegate(object):
             self.history.append(float(price))
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a ruby worth, ' + price)
-
 
     def grail_in_sight(self):
 

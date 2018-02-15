@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-
+'''Final project for CSSE120 Winter 2017-18
+Uses a robot to "find gems"
+Author: Andrew Weger Feb 12-19, 2018
+'''
 
 import mqtt_remote_method_calls as com
 import robot_controller as robo
@@ -60,7 +63,7 @@ def main():
     and if it returns one of the desired values, it will send a mqtt message to the client of what it found.
     When a color is found the robot send a mqtt message to the computer with its "jewl code", 0-sapphire/1-emerald/2-ruby.'''
     print("********************************")
-    print("RUNNING")
+    print("PROGRAM RUNNING")
     print("********************************")
 
 
