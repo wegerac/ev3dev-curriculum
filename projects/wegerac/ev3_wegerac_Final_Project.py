@@ -83,7 +83,7 @@ def main():
     my_delegate.mqtt_client = mqtt_client
     mqtt_client.connect_to_pc()
 
-    my_delegate.robot.arm_calibration()
+    #my_delegate.robot.arm_calibration()
 
     btn = ev3.Button()
 

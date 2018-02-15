@@ -9,11 +9,12 @@ from tkinter import ttk
 import mqtt_remote_method_calls as com
 import random as ran
 import time
+import sys
 
 class PcDelegate(object):
     '''Creates the delegate for the PC'''
-    def __init__(self, listbox, grailbtn, label, label2, frame1, frame2, notebook):
-        print("")
+    def __init__(self, root, listbox, grailbtn, label, label2, frame1, frame2, notebook, tab1, tab2):
+        self.root = root
         self.listbox = listbox
         self.count = 0
         self.total_money = 0
@@ -24,10 +25,8 @@ class PcDelegate(object):
         self.frame1 = frame1
         self.frame2 = frame2
         self.notebook = notebook
-        if self.total_money >= 1000000:
-            self.win()
-
-
+        self.tab1 = tab1
+        self.tab2 = tab2
 
     def found_item(self, jewl_code):
         '''Gets the number from the mqtt message sent from the robot and the different
@@ -43,6 +42,8 @@ class PcDelegate(object):
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
             self.label2['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a sapphire worth, ' + price)
+            if self.total_money >= 1000:
+                self.win()
 
         elif jewl_code == 1:
             price = self.calc_price()
@@ -53,6 +54,8 @@ class PcDelegate(object):
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
             self.label2['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a emerald worth, ' + str(price))
+            if self.total_money >= 1000:
+                self.win()
 
         elif jewl_code == 2:
             price = self.calc_price()
@@ -63,6 +66,8 @@ class PcDelegate(object):
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
             self.label2['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a ruby worth, ' + price)
+            if self.total_money >= 1000:
+                self.win()
 
     def grail_in_sight(self):
         '''Shows the Find Grail button when
@@ -77,10 +82,20 @@ class PcDelegate(object):
         return price
 
     def win(self):
-            self.frame1.destroy()
-            self.frame2.destroy()
-            self.notebook.tab(0, text='CONGRATULATIONS')
-            self.notebook.tab(1, text='YOU WIN!')
+        self.frame1.destroy()
+        self.frame2.destroy()
+        self.notebook.tab(0, text='CONGRATULATIONS')
+        self.notebook.tab(1, text='YOU WIN!')
+        win = tk.Label(self.tab1, text='Congrats, you win!')
+        win2 = tk.Label(self.tab1, text=('If you snagged the grail, please lower the arm in the now '
+                                         '"YOU WIN" tab before closing the window)'))
+        win3 = tk.Label(self.tab1, text='The program will close automatically in 60 seconds.')
+        win.grid()
+        win2.grid()
+        win3.grid()
+        time.sleep(60)
+        self.root.destroy()
+
 
 def main():
     '''Creates the tkinter GUI for the game'''
@@ -97,13 +112,13 @@ def main():
 
     fbtn = tk.Button(frame1, text="Forward", width=10)
     fbtn.grid(row=1, column=1)
-    fbtn['command'] = lambda: drive_forward(mqtt_client, 700, 700)
-    root.bind('<Up>', lambda event: drive_forward(mqtt_client, 700, 700))
+    fbtn['command'] = lambda: drive_forward(mqtt_client, 500, 500)
+    root.bind('<Up>', lambda event: drive_forward(mqtt_client, 500, 500))
 
     bbtn = tk.Button(frame1, text="Backwards", width=10)
     bbtn.grid(row=3, column=1)
-    bbtn['command'] = lambda: drive_backward(mqtt_client, 700, 700)
-    root.bind('<Down>', lambda event: drive_backward(mqtt_client, 700, 700))
+    bbtn['command'] = lambda: drive_backward(mqtt_client, 500, 500)
+    root.bind('<Down>', lambda event: drive_backward(mqtt_client, 500, 500))
 
     lbtn = tk.Button(frame1, text="Left", width=10)
     lbtn.grid(row=2, column=0)
@@ -168,7 +183,7 @@ def main():
     armdown['command'] = lambda:arm_down(mqtt_client)
     armdown.grid(row=2, column=2)
 
-    pc_delegate = PcDelegate(listbox, grailbtn, moneylabel1, moneylabel2, frame1, frame2, notebook)
+    pc_delegate = PcDelegate(root, listbox, grailbtn, moneylabel1, moneylabel2, frame1, frame2, notebook, tab1, tab2)
     mqtt_client = com.MqttClient(pc_delegate)
     mqtt_client.connect_to_ev3()
 
