@@ -41,6 +41,9 @@ class Snatch3r(object):
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
         assert self.pixy
 
+        self.right_motor_encoder = self.right_motor.position
+        self.left_motor_encoder = self.left_motor.position
+
     def drive_inches(self, inches_target, speed_deg_per_second):
         """Drives so far in inches at a speed in degrees per second. A
         negative distance will make the robot travel backwards."""
