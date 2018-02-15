@@ -6,7 +6,7 @@ And button states but that's part of sensors so technically...
 Authored by: William Dalby
 """
 import ev3dev as ev3
-import robot_controller as robo
+import dalbywh_library as robo
 import mqtt_remote_method_calls as com
 
 # doesn't need a delegate as it won't be sending anything

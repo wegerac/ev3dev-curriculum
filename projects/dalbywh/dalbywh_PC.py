@@ -43,9 +43,10 @@ from tkinter import ttk
 from tkinter import *
 import time
 import math
-import robot_controller as robo
+import dalbywh_library as robo
 import ev3dev as ev3
-import  mqtt_remote_method_calls as com
+from tkinter.scrolledtext import ScrolledText
+import mqtt_remote_method_calls as com
 
 
 def main():
@@ -56,46 +57,42 @@ def main():
     # establishes frame for GUI
 
     root = tkinter.Tk()
-    root.title = 'Robot Controller'
-    controller_frame = ttk.Frame(root, padding=5)
+    root.title('Robot Controller')
+
+    # Establishes Tabs
+    notebook = ttk.Notebook(root)
+
+    controller_frame = ttk.Frame(notebook)
     controller_frame.grid()
+    options_frame = ttk.Frame(notebook)
+    options_frame.grid()
 
-    # # Sets Up Notebook
-    # tabs = ttk.Notebook(root)
-    # options_tab = ttk.Frame(tabs)
-    # controller_tab = ttk.Frame(tabs)
-    #
-    # tabs.add(options_tab, text='Options')
-    # tabs.add(controller_tab, text='Controller')
+    notebook.add(controller_frame, text="Controller")
+    notebook.add(options_frame, text='Options')
 
-    # Seperate attempt
-    # menu = Menu(root)
-    # menu.add_command(label='ON', command=print('ON'))
-    # menu.add_command(label='OFF', command=print('Bepis'))
-    #
-    # root.config(menu=menu)
+    notebook.grid()
 
     # Drive Motor Speed Slider Label
-    speed_scale_label = ttk.Label(root, text='Drive Motor Speed')
+    speed_scale_label = ttk.Label(options_frame, text='Drive Motor Speed')
     speed_scale_label.grid()
 
     # Initialize Drive Motor Speed Slider
-    speed_scale = Scale(root, from_=0, to=900, orient=HORIZONTAL)
+    speed_scale = Scale(options_frame, from_=0, to=900, orient=HORIZONTAL)
     speed_scale.grid()
 
     # Initialize IR Sensor Checkbox
     check_button_variable = IntVar()
-    check_box = Checkbutton(root, text='IR Sensor',
+    check_box = Checkbutton(options_frame, text='IR Sensor',
                             variable=check_button_variable)
-    check_box.grid()
+    check_box.grid(row = 2, column = 1)
 
     # Arm motor speed slider label
-    arm_speed_label = ttk.Label(root, text='Arm Motor Speed')
-    arm_speed_label.grid()
+    arm_speed_label = ttk.Label(options_frame, text='Arm Motor Speed')
+    arm_speed_label.grid(row= 0, column = 2)
 
     # Initialize Arm motor speed slider
-    arm_speed_scale = Scale(root, from_=0, to=400, orient=HORIZONTAL)
-    arm_speed_scale.grid()
+    arm_speed_scale = Scale(options_frame, from_=0, to=400, orient=HORIZONTAL)
+    arm_speed_scale.grid(row=1, column = 2)
 
     # Drive Speed Variable
     drive_speed = speed_scale.get()
@@ -133,19 +130,24 @@ def main():
 
     # Quit Button
     quit_button = ttk.Button(controller_frame, text='Quit')
-    quit_button.grid()
+    quit_button.grid(row=4, column=3)
     quit_button['command'] = lambda: shutdown(mqtt_client)
 
-    # Initialize option menu
-    variable = StringVar(root)
-    variable.set('ON')
+    # Quit Button for Options menu
+    second_quit_button = ttk.Button(options_frame, text='Quit')
+    second_quit_button.grid(row=3, column=2)
+    second_quit_button['command']= lambda:shutdown(mqtt_client)
 
-    menu = OptionMenu(root, variable, "ON", "OFF")
-    menu.grid()
+    # # Initialize option menu
+    # variable = StringVar(root)
+    # variable.set('ON')
+    #
+    # menu = OptionMenu(options_frame, variable, "ON", "OFF")
+    # menu.grid()
 
     # Initialize arm calibration button
-    arm_calibrate = ttk.Button(root, text='Re-Calibrate arm')
-    arm_calibrate.grid()
+    arm_calibrate = ttk.Button(options_frame, text='Re-Calibrate arm')
+    arm_calibrate.grid(row=3, column=0)
     arm_calibrate['command'] = lambda: calibrate_arm(mqtt_client)
 
     root.mainloop()
