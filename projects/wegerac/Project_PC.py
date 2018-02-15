@@ -11,6 +11,7 @@ import random as ran
 import time
 
 class PcDelegate(object):
+    '''Creates the delegate for the PC'''
     def __init__(self, listbox, grailbtn, label):
         print("")
         self.listbox = listbox
@@ -20,12 +21,11 @@ class PcDelegate(object):
         self.label = label
         self.history = []
 
-    def string(self, string):
-        self.label['text'] = (string + str(self.count))
-        self.count = self.count + 1
-
     def found_item(self, jewl_code):
-
+        '''Gets the number from the mqtt message sent from the robot and the different
+        values will correspond to different "gems". When one is found the function will
+        calculate a price from the calc_price function. It will add that price to a seq of
+        prices to let the delete button to delete the last price and update the counter.'''
         if jewl_code == 0:
             price = self.calc_price()
             self.total_money = self.total_money + float(price)
@@ -54,11 +54,12 @@ class PcDelegate(object):
             print('You found a ruby worth, ' + price)
 
     def grail_in_sight(self):
-
+        '''Shows the Find Grail button when
+        the mqtt message calls this function '''
         self.grail.grid()
 
     def calc_price(self):
-
+        '''Calculates the price of the "Gem" found.'''
         dollar = ran.randint(0, 9999)
         cents = ran.randint(0, 99)
         price = str(dollar) + '.' + str(cents)
@@ -66,7 +67,7 @@ class PcDelegate(object):
 
 
 def main():
-
+    '''Creates the tkinter GUI for the game'''
     root = tk.Tk()
     root.title("Andrew Weger CSSE120 Final Project")
 
@@ -130,45 +131,64 @@ def main():
 
 
 def drive_forward(mqtt_client, left_speed, right_speed):
+    '''Takes the given mqtt_client, and speeds to call the driving
+    functions that are in the robots delegate class.'''
     mqtt_client.send_message('right_forward', [True, right_speed])
     mqtt_client.send_message('left_forward', [True, left_speed])
 
 
 def turn_left(mqtt_client, left_speed, right_speed):
+    '''Takes the given mqtt_client, and speeds to call the driving
+    functions that are in the robots delegate class.'''
+
     mqtt_client.send_message('right_forward', [True, right_speed])
     mqtt_client.send_message('left_backward', [True, left_speed])
 
 
 def turn_right(mqtt_client, left_speed, right_speed):
+    '''Takes the given mqtt_client, and speeds to call the driving
+    functions that are in the robots delegate class.'''
+
     mqtt_client.send_message('right_backward', [True, right_speed])
     mqtt_client.send_message('left_forward', [True, left_speed])
 
 
 def stop(mqtt_client):
+    '''Takes the given mqtt_client, and speeds to call the driving
+    functions that are in the robots delegate class.'''
     mqtt_client.send_message('left_forward', [False, 0])
     mqtt_client.send_message('right_forward', [False, 0])
 
 
 def drive_backward(mqtt_client, left_speed, right_speed):
+    '''Takes the given mqtt_client, and speeds to call the driving
+    functions that are in the robots delegate class.'''
     mqtt_client.send_message('right_backward', [True, right_speed])
     mqtt_client.send_message('left_backward', [True, left_speed])
 
 
 def quit(mqtt_client):
+    '''Takes the given mqtt_client and sends a message to call the
+    shutdown function in the robots delegate class.'''
     mqtt_client.send_message('shutdown')
     exit()
 
 
 def find_grail(mqtt_client):
+    '''Takes the given mqtt_client and sends a message to call the
+    shutdown function in the robots delegate class.'''
     mqtt_client.send_message('find_grail')
 
-def delete(delagate, listbox, label):
 
-    price = delagate.history[len(delagate.history) - 1]
-    total = delagate.total_money
-    delagate.total_money = total - price
+def delete(delegate, listbox, label):
+    '''Takes the given delegate, updates the total money and the
+    history of the prices, and deletes the last listbox entry.'''
+    price = delegate.history[len(delegate.history) - 1]
+    total = delegate.total_money
+    delegate.total_money = total - price
     listbox.delete(0)
-    label['text'] = 'Total money: ' + '$' + str(delagate.total_money)
+    del delegate.history[len(delegate.history) - 1]
+    label['text'] = 'Total money: ' + '$' + str(delegate.total_money)
     if listbox.size() == 0:
         label['text'] = "Total money: " + '$0.00'
 
