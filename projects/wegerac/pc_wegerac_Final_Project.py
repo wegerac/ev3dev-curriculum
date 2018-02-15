@@ -12,7 +12,7 @@ import time
 
 class PcDelegate(object):
     '''Creates the delegate for the PC'''
-    def __init__(self, listbox, grailbtn, label):
+    def __init__(self, listbox, grailbtn, label, label2):
         print("")
         self.listbox = listbox
         self.count = 0
@@ -20,6 +20,7 @@ class PcDelegate(object):
         self.grail = grailbtn
         self.label = label
         self.history = []
+        self.label2 = label2
 
     def found_item(self, jewl_code):
         '''Gets the number from the mqtt message sent from the robot and the different
@@ -33,6 +34,7 @@ class PcDelegate(object):
             self.listbox.insert(0, text)
             self.history.append(float(price))
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
+            self.label2['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a sapphire worth, ' + price)
 
         elif jewl_code == 1:
@@ -42,6 +44,7 @@ class PcDelegate(object):
             self.listbox.insert(0, text)
             self.history.append(float(price))
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
+            self.label2['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a emerald worth, ' + str(price))
 
         elif jewl_code == 2:
@@ -51,6 +54,7 @@ class PcDelegate(object):
             self.listbox.insert(0, text)
             self.history.append(float(price))
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
+            self.label2['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a ruby worth, ' + price)
 
     def grail_in_sight(self):
@@ -71,7 +75,12 @@ def main():
     root = tk.Tk()
     root.title("Andrew Weger CSSE120 Final Project")
 
-    frame1 = ttk.Frame(root, padding=20)
+    notebook = ttk.Notebook(root)
+
+    tab1 = ttk.Frame(notebook)
+    tab2 = ttk.Frame(notebook)
+
+    frame1 = ttk.Frame(tab1, padding=20)
     frame1.grid(row=0, column=1)
 
     fbtn = tk.Button(frame1, text="Forward", width=10)
@@ -99,7 +108,7 @@ def main():
     sbtn['command'] = lambda: stop(mqtt_client)
     root.bind('<space>', lambda event: stop(mqtt_client))
 
-    frame2 = ttk.Frame(root, padding=20)
+    frame2 = ttk.Frame(tab1, padding=20)
     scrollbar = tk.Scrollbar(frame2)
     scrollbar.grid(row=0, column=1, sticky=tk.N + tk.S)
 
@@ -113,17 +122,32 @@ def main():
     grailbtn['command'] = lambda: find_grail(mqtt_client)
 
     deletebtn = tk.Button(frame1, text='Delete', width=10)
-    deletebtn['command'] = lambda: delete(pc_delegate, listbox, moneylabel)
+    deletebtn['command'] = lambda: delete(pc_delegate, listbox, moneylabel1, moneylabel2)
     deletebtn.grid(row=4, column=0)
 
     quitbtn = tk.Button(frame1, text='Quit', width=10)
     quitbtn['command'] = lambda: quit(mqtt_client)
     quitbtn.grid(row=4, column=2)
 
-    moneylabel = tk.Label(frame1, text='Total money: $0')
-    moneylabel.grid(row=0, column=1)
+    moneylabel1 = tk.Label(frame1, text='Total money: $0.00')
+    moneylabel1.grid(row=0, column=1)
 
-    pc_delegate = PcDelegate(listbox, grailbtn, moneylabel)
+    armbtn = tk.Button(tab2, text='Arm Calibration')
+    armbtn['command'] = lambda: calibrate(mqtt_client)
+    armbtn.grid(row=0, column=0)
+
+    resetmoneybtn = tk.Button(tab2, text='Reset Money')
+    resetmoneybtn['command'] = lambda: reset_money(pc_delegate)
+    resetmoneybtn.grid(row=0, column=1)
+
+    moneylabel2 = tk.Label(tab2, text='Total money: $0.00')
+
+    notebook.add(tab1, text='Controller and Listbox')
+    notebook.add(tab2, text='Options')
+
+    notebook.grid()
+
+    pc_delegate = PcDelegate(listbox, grailbtn, moneylabel1, moneylabel2)
     mqtt_client = com.MqttClient(pc_delegate)
     mqtt_client.connect_to_ev3()
 
@@ -180,7 +204,7 @@ def find_grail(mqtt_client):
     mqtt_client.send_message('find_grail')
 
 
-def delete(delegate, listbox, label):
+def delete(delegate, listbox, label, label2):
     '''Takes the given delegate, updates the total money and the
     history of the prices, and deletes the last listbox entry.'''
     price = delegate.history[len(delegate.history) - 1]
@@ -189,9 +213,19 @@ def delete(delegate, listbox, label):
     listbox.delete(0)
     del delegate.history[len(delegate.history) - 1]
     label['text'] = 'Total money: ' + '$' + str(delegate.total_money)
+    label2['text'] = 'Total money: ' + '$' + str(delegate.total_money)
     if listbox.size() == 0:
         label['text'] = "Total money: " + '$0.00'
+        label2['text'] = "Total money: " + '$0.00'
 
+def calibrate(mqtt_client):
+    mqtt_client.send_message(calibrate)
+
+def reset_money(delegate):
+    delegate.total_money = 0
+    delegate.history = []
+    delegate.label['text'] = 'Total money: $0.00'
+    delegate.label2['text'] = 'Total money: $0.00'
 
 
 

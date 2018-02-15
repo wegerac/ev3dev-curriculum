@@ -56,6 +56,9 @@ class Ev3Delegate(object):
             ev3.Sound.speak('Ha')
             ev3.Sound.speak('I will rule them all!')
 
+    def calibrate(self):
+        self.robot.arm_calibration()
+
 
 
 def main():
