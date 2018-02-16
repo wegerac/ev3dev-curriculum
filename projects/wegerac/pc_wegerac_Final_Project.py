@@ -82,6 +82,7 @@ class PcDelegate(object):
         return price
 
     def win(self):
+        '''Ends the game when called.'''
         self.frame1.destroy()
         self.frame2.destroy()
         self.notebook.tab(0, text='CONGRATULATIONS')
@@ -255,15 +256,19 @@ def delete(delegate, listbox, label, label2):
         label2['text'] = "Total money: " + '$0.00'
 
 def calibrate(mqtt_client):
+    '''Sends a message to the mqtt_client to call the calibrate function.'''
     mqtt_client.send_message('calibrate')
 
 def arm_up(mqtt_client):
+    '''Sends a message to the mqtt_client to call the arm_up function.'''
     mqtt_client.send_message('arm_up')
 
 def arm_down(mqtt_client):
+    '''Sends a message to the mqtt_client to call the arm_down function.'''
     mqtt_client.send_message('arm_down')
 
 def reset_money(delegate):
+    '''Takes the given delegate and resets its money and the labels on the GUI'''
     delegate.total_money = 0
     delegate.history = []
     delegate.label['text'] = 'Total money: $0.00'
@@ -271,5 +276,8 @@ def reset_money(delegate):
     delegate.listbox.delete(0, tk.END)
 
 
+# ****************************************
+# Calls main to get the ball running.
+# ****************************************
 
 main()

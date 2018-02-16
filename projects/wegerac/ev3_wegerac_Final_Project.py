@@ -46,7 +46,8 @@ class Ev3Delegate(object):
 
     def find_grail(self):
         '''Finds the "grail", actually the controller in beacon mode, using the seek_beacon
-        function in the robot_controller file.'''
+        function in the robot_controller file. When the robot finds the "grail" it sends a
+        mqtt message to call the win function on the pc to end the game.'''
         seek = self.robot.seek_beacon()
         if seek == True:
             self.robot.arm_up()
@@ -58,14 +59,16 @@ class Ev3Delegate(object):
             self.mqtt_client.send_message('win')
 
     def arm_down(self):
+        '''Gets the message from the mqtt_client to call the arm_down function in the robots class'''
         self.robot.arm_down()
 
     def arm_up(self):
+        '''Gets the message from the mqtt_client to call the arm_up function in the robots class'''
         self.robot.arm_up()
 
     def calibrate(self):
-        self.robot.arm_up()
-        self.robot.arm_down()
+        '''Gets the message from the mqtt_client to call the arm_calibration function in the robots class '''
+        self.robot.arm_calibration()
 
 
 
