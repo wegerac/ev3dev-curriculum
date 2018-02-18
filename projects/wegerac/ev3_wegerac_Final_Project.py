@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-
+'''Final project for CSSE120 Winter 2017-18
+Uses a robot to "find gems"
+Author: Andrew Weger Feb 12-19, 2018
+'''
 
 import mqtt_remote_method_calls as com
 import robot_controller as robo
@@ -43,7 +46,8 @@ class Ev3Delegate(object):
 
     def find_grail(self):
         '''Finds the "grail", actually the controller in beacon mode, using the seek_beacon
-        function in the robot_controller file.'''
+        function in the robot_controller file. When the robot finds the "grail" it sends a
+        mqtt message to call the win function on the pc to end the game.'''
         seek = self.robot.seek_beacon()
         if seek == True:
             self.robot.arm_up()
@@ -52,6 +56,19 @@ class Ev3Delegate(object):
             ev3.Sound.speak('Ha')
             ev3.Sound.speak('Ha')
             ev3.Sound.speak('I will rule them all!')
+            self.mqtt_client.send_message('win')
+
+    def arm_down(self):
+        '''Gets the message from the mqtt_client to call the arm_down function in the robots class'''
+        self.robot.arm_down()
+
+    def arm_up(self):
+        '''Gets the message from the mqtt_client to call the arm_up function in the robots class'''
+        self.robot.arm_up()
+
+    def calibrate(self):
+        '''Gets the message from the mqtt_client to call the arm_calibration function in the robots class '''
+        self.robot.arm_calibration()
 
 
 
@@ -60,7 +77,7 @@ def main():
     and if it returns one of the desired values, it will send a mqtt message to the client of what it found.
     When a color is found the robot send a mqtt message to the computer with its "jewl code", 0-sapphire/1-emerald/2-ruby.'''
     print("********************************")
-    print("RUNNING")
+    print("PROGRAM RUNNING")
     print("********************************")
 
 
@@ -69,9 +86,11 @@ def main():
     my_delegate.mqtt_client = mqtt_client
     mqtt_client.connect_to_pc()
 
-    my_delegate.robot.arm_calibration()
+    #my_delegate.robot.arm_calibration()
 
-    beacon = ev3.BeaconSeeker(channel= 1)
+    btn = ev3.Button()
+
+    beacon = ev3.BeaconSeeker(channel=1)
 
     while True:
 
@@ -94,8 +113,8 @@ def main():
             mqtt_client.send_message('grail_in_sight')
             time.sleep(2)
 
-        elif my_delegate.robot.touch_sensor.is_pressed:
-            ev3.Sound.speak('break')
+        elif btn.left:
+            my_delegate.robot.shutdown()
             break
 
 
