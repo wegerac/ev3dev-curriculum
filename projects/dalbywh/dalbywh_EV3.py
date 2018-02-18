@@ -74,7 +74,7 @@ def main():
 
         right_start = right_new
         left_start = left_new
-        
+
         time.sleep(0.01)
 
 
