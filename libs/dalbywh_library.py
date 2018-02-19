@@ -135,6 +135,8 @@ class Snatch3r(object):
         if state:
             self.left_motor.run_forever(speed_sp=speed)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+            print(speed)
+            print(state)
         else:
             self.left_motor.stop()
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
