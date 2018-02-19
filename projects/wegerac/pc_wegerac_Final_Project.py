@@ -9,7 +9,6 @@ from tkinter import ttk
 import mqtt_remote_method_calls as com
 import random as ran
 import time
-import sys
 
 class PcDelegate(object):
     '''Creates the delegate for the PC'''
