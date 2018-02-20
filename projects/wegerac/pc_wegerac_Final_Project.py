@@ -9,7 +9,6 @@ from tkinter import ttk
 import mqtt_remote_method_calls as com
 import random as ran
 import time
-import sys
 
 class PcDelegate(object):
     '''Creates the delegate for the PC'''
@@ -42,7 +41,7 @@ class PcDelegate(object):
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
             self.label2['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a sapphire worth, ' + price)
-            if self.total_money >= 1000:
+            if self.total_money >= 100000:
                 self.win()
 
         elif jewl_code == 1:
@@ -54,7 +53,7 @@ class PcDelegate(object):
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
             self.label2['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a emerald worth, ' + str(price))
-            if self.total_money >= 1000:
+            if self.total_money >= 100000:
                 self.win()
 
         elif jewl_code == 2:
@@ -66,7 +65,7 @@ class PcDelegate(object):
             self.label['text'] = 'Total money: ' + '$' + str(self.total_money)
             self.label2['text'] = 'Total money: ' + '$' + str(self.total_money)
             print('You found a ruby worth, ' + price)
-            if self.total_money >= 1000:
+            if self.total_money >= 100000:
                 self.win()
 
     def grail_in_sight(self):
@@ -101,7 +100,7 @@ class PcDelegate(object):
 def main():
     '''Creates the tkinter GUI for the game'''
     root = tk.Tk()
-    root.title("Andrew Weger CSSE120 Final Project")
+    root.title("Andrew Weger CSSE120 Final Project Gem Miner Game")
 
     notebook = ttk.Notebook(root)
 

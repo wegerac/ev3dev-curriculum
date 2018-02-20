@@ -50,6 +50,7 @@ class Ev3Delegate(object):
         mqtt message to call the win function on the pc to end the game.'''
         seek = self.robot.seek_beacon()
         if seek == True:
+            self.robot.drive_inches(1, 200)
             self.robot.arm_up()
             self.robot.turn_degrees(360, 800)
             ev3.Sound.speak('I found it!')
@@ -96,17 +97,17 @@ def main():
 
         if my_delegate.robot.color_sensor.color == ev3.ColorSensor.COLOR_BLUE:
                 found_stone(mqtt_client, 0)
-                time.sleep(4)
+                time.sleep(2)
                 continue
 
         elif my_delegate.robot.color_sensor.color == ev3.ColorSensor.COLOR_GREEN:
             found_stone(mqtt_client, 1)
-            time.sleep(4)
+            time.sleep(2)
             continue
 
         elif my_delegate.robot.color_sensor.color == ev3.ColorSensor.COLOR_RED:
             found_stone(mqtt_client, 2)
-            time.sleep(4)
+            time.sleep(2)
             continue
 
         elif beacon.distance >= 0:
