@@ -46,10 +46,7 @@ Authors: William Dalby
 import tkinter
 from tkinter import ttk
 from tkinter import *
-import time
 import math
-import dalbywh_library as robo
-import ev3dev as ev3
 import mqtt_remote_method_calls as com
 
 
@@ -64,31 +61,22 @@ def main():
 
     controller_frame = ttk.Frame(notebook)
     controller_frame.grid()
-    options_frame = ttk.Frame(notebook)
-    options_frame.grid()
     map_frame = ttk.Frame(notebook)
     map_frame.grid()
 
     notebook.add(controller_frame, text="Controller")
-    notebook.add(options_frame, text='Options')
     notebook.add(map_frame, text='Map')
 
     notebook.grid()
 
     # Drive Motor Speed Slider Label
-    speed_scale_label = ttk.Label(options_frame, text='Drive Motor Speed')
-    speed_scale_label.grid()
+    speed_scale_label = ttk.Label(controller_frame, text='Drive Motor Speed')
+    speed_scale_label.grid(row=0, column=5)
 
     # Initialize Drive Motor Speed Slider
-    speed_scale = Scale(options_frame, from_=0, to=900, orient=HORIZONTAL)
-    speed_scale.grid()
+    speed_scale = Scale(controller_frame, from_=0, to=900, orient=HORIZONTAL)
+    speed_scale.grid(row=1, column=5)
     speed_scale.set(450)
-
-    # Initialize IR Sensor Checkbox
-    check_button_variable = IntVar()
-    check_box = Checkbutton(options_frame, text='IR Sensor',
-                            variable=check_button_variable)
-    check_box.grid(row=2, column=1)
 
     # Forward button
     forward_button = ttk.Button(controller_frame, text='Forward')
@@ -123,11 +111,6 @@ def main():
     quit_button.grid(row=4, column=3)
     quit_button['command'] = lambda: shutdown(mqtt_client)
 
-    # Quit Button for Options menu
-    second_quit_button = ttk.Button(options_frame, text='Quit')
-    second_quit_button.grid(row=3, column=2)
-    second_quit_button['command'] = lambda: shutdown(mqtt_client)
-
     # Initializes map for robot to draw on
     map_of_robot = Canvas(map_frame, width=500, height=500)
     map_of_robot.grid()
@@ -149,7 +132,7 @@ def main():
             self.right = 0
             self.left = 0
 
-        def draw_map(self, start_x, start_y, radius, angle):
+        def draw_map(self, start_x, start_y, angle):
             # map_of_robot.create_line takes 4 args. x, y, x, y
             radius = 30
             second_x = start_x + radius*math.sin(angle)
